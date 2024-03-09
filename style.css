@@ -1,0 +1,30 @@
+/*-------------------------
+  Color Scheme: Nord
+-------------------------*/
+:root {
+  --darkBase: #262c35;
+  --base: #2e3440;
+  --polarShade1: #3b4252;
+  --polarShade2: #434c5e;
+  --polarShade3: #4c566a;
+  --snowStorm1: #d8dee9;
+  --snowStorm2: #eceff4;
+  --frost1: #8fbcbb;
+  --frost2: #88c0d0;
+  --frost3: #81a1c1;
+  --frost4: #5e81ac;
+  --red: #bf616a;
+  --peach: #d08770;
+  --yellow: #ebcb8b;
+  --green: #a3be8c;
+  --violet: #b48ead;
+}
+
+@font-face {
+  font-family: '';
+  src: url();
+}
+
+body {
+  background-color: var(--darkBase);
+}
