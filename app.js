@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     startGame(selectedHand);
   });
 
-  // game logic
+  // count logic
   const winCountContainer = document.getElementById('win-count');
   const drawCountContainer = document.getElementById('draw-count');
   const lossCountContainer = document.getElementById('loss-count');
@@ -121,10 +121,93 @@ document.addEventListener('DOMContentLoaded', function() {
     winCountContainer.innerText = wins;
     drawCountContainer.innerText = draws;
     lossCountContainer.innerText = losses;
-
-    // add logic for animations based on winning
+  }
+  function winCountAnimation() {
+    gsap.to('#win-count', {
+      color: '#a3be8c', 
+      duration: 0.3, 
+      ease: 'easeInOut', // Use the easeInOut easing function
+      onComplete: () => {  // Optional callback to restore the color
+        gsap.to('#win-count', { color: 'var(--snowStorm2)', duration: 0.6, ease: 'easeInOut' });
+      }
+    });
+  }
+  function drawCountAnimation() {
+    gsap.to('#draw-count', {
+      color: '#5e81ac', 
+      duration: 0.3, 
+      ease: 'easeInOut', // Use the easeInOut easing function
+      onComplete: () => {  // Optional callback to restore the color
+        gsap.to('#draw-count', { color: 'var(--snowStorm2)', duration: 0.6, ease: 'easeInOut' });
+      }
+    });
+  }
+  function lossCountAnimation() {
+    gsap.to('#loss-count', {
+      color: '#bf616a', 
+      duration: 0.3, 
+      ease: 'easeInOut', // Use the easeInOut easing function
+      onComplete: () => {  // Optional callback to restore the color
+        gsap.to('#loss-count', { color: 'var(--snowStorm2)', duration: 0.6, ease: 'easeInOut' });
+      }
+    });
   }
 
+  // change background of main div when winning/losing
+  let mainBackTween = null;
+  function winBackChange() {
+    if (mainBackTween) mainBackTween.kill();
+    mainBackTween = gsap.to('#main-back', {
+      backgroundColor: '#a3be8c', 
+      duration: 2, 
+      ease: 'power1.inOut',
+      onComplete: function() {
+        setTimeout(() => {
+          gsap.to('#main-back', { 
+            duration: 2,
+            ease: 'power1.inOut',
+            backgroundColor: 'var(--darkBase)'
+          });
+        }, 100); 
+      }
+    });
+  }
+  function drawBackChange() {
+    if (mainBackTween) mainBackTween.kill();
+    mainBackTween = gsap.to('#main-back', {
+      backgroundColor: '#5e81ac', 
+      duration: 2, 
+      ease: 'power1.inOut',
+      onComplete: function() {
+        setTimeout(() => {
+          gsap.to('#main-back', { 
+            duration: 2,   
+            ease: 'power1.inOut',
+            backgroundColor: 'var(--darkBase)'
+          });
+        }, 100); 
+      }
+    });
+  }
+  function lossBackChange() {
+    if (mainBackTween) mainBackTween.kill();
+    mainBackTween = gsap.to('#main-back', {
+      backgroundColor: '#bf616a', 
+      duration: 2, 
+      ease: 'power1.inOut',
+      onComplete: function() {
+        setTimeout(() => {
+          gsap.to('#main-back', { 
+            duration: 2,   
+            ease: 'power1.inOut',
+            backgroundColor: 'var(--darkBase)'
+          });
+        }, 100); 
+      }
+    });
+  }
+
+  // game logic
   function startGame(hand) {
     console.log(`Game has started, with the User Hand:`, hand.id);
     getBotHand();
@@ -132,54 +215,70 @@ document.addEventListener('DOMContentLoaded', function() {
     if (selectedHand === rockHand && botHand === botRockHand) {
       console.log(`rock ties rock, tie!`);
       drawCount++;
+      drawCountAnimation();
+      drawBackChange();
       console.log(`Draws:`, drawCount);
 
     } else if (selectedHand === rockHand && botHand === botPaperHand) {
       console.log(`rock loses to paper, lose!`);
       lossCount++;
+      lossCountAnimation();
+      lossBackChange();
       console.log(`Loss:`, lossCount);
 
     } else if (selectedHand === rockHand && botHand === botScissorHand) {
       console.log(`rock beats scissors, win!`);
       winCount++;
+      winCountAnimation();
+      winBackChange();
       console.log(`Wins:`, winCount);
+      
     }
     if (selectedHand === paperHand && botHand === botRockHand) {
       console.log(`paper beats rock, win!`);
       winCount++;
+      winCountAnimation();
+      winBackChange();
       console.log(`Wins:`, winCount);
+      
 
     } else if (selectedHand === paperHand && botHand === botPaperHand) {
       console.log(`paper ties paper, tie!`);
       drawCount++;
+      drawCountAnimation();
+      drawBackChange();
       console.log(`Draws:`, drawCount);
 
     } else if (selectedHand === paperHand && botHand === botScissorHand) {
       console.log(`paper loses to scissors, lose!`);
       lossCount++;
+      lossCountAnimation();
+      lossBackChange();
       console.log(`Loss:`, lossCount);
 
     }
     if (selectedHand === scissorHand && botHand === botRockHand) {
       console.log(`scissors loses to rock, lose!`);
       lossCount++;
+      lossCountAnimation();
+      lossBackChange();
       console.log(`Loss:`, lossCount);
 
     } else if (selectedHand === scissorHand && botHand === botPaperHand) {
       console.log(`scissors beats paper, win!`);
       winCount++;
+      winCountAnimation();
+      winBackChange();
       console.log(`Wins:`, winCount);
 
     } else if (selectedHand === scissorHand && botHand === botScissorHand) {
       console.log(`scissors ties scissors, tie!`);
       drawCount++;
+      drawCountAnimation();
+      drawBackChange();
       console.log(`Draws:`, drawCount);
 
     }
     updateCountContainer(winCount, drawCount, lossCount);
   }
-
-
-
 });
-
