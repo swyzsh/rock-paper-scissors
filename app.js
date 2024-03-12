@@ -18,4 +18,3 @@ document.addEventListener('DOMContentLoaded', function() {
     window.open('https://github.com/swyzsh', '_blank');
   });
 })
-
