@@ -1,20 +1,3 @@
-/*
-
-1. Score keeping - you, pc, draws
-2. change change card color depending on result of game
-3. Use apple emojis for hands
-
-get bot to gen random number from 1-3 => assing each number to a type (rock, paper scisscors)
-
-write game lose/win logic by comparing types from bot and user
-let user select hand user wants to play with
-
-4. give some sort of visual clue for winning/losing/draw
-
-5. when u select a hand, change its order in the flex container also
-
-*/
-
 // run script after DOM loads
 document.addEventListener('DOMContentLoaded', function() {
   // socials
@@ -211,28 +194,24 @@ document.addEventListener('DOMContentLoaded', function() {
   function startGame(hand) {
     console.log(`Game has started, with the User Hand:`, hand.id);
     getBotHand();
-
     if (selectedHand === rockHand && botHand === botRockHand) {
       console.log(`rock ties rock, tie!`);
       drawCount++;
       drawCountAnimation();
       drawBackChange();
       console.log(`Draws:`, drawCount);
-
     } else if (selectedHand === rockHand && botHand === botPaperHand) {
       console.log(`rock loses to paper, lose!`);
       lossCount++;
       lossCountAnimation();
       lossBackChange();
       console.log(`Loss:`, lossCount);
-
     } else if (selectedHand === rockHand && botHand === botScissorHand) {
       console.log(`rock beats scissors, win!`);
       winCount++;
       winCountAnimation();
       winBackChange();
       console.log(`Wins:`, winCount);
-      
     }
     if (selectedHand === paperHand && botHand === botRockHand) {
       console.log(`paper beats rock, win!`);
@@ -240,22 +219,18 @@ document.addEventListener('DOMContentLoaded', function() {
       winCountAnimation();
       winBackChange();
       console.log(`Wins:`, winCount);
-      
-
     } else if (selectedHand === paperHand && botHand === botPaperHand) {
       console.log(`paper ties paper, tie!`);
       drawCount++;
       drawCountAnimation();
       drawBackChange();
       console.log(`Draws:`, drawCount);
-
     } else if (selectedHand === paperHand && botHand === botScissorHand) {
       console.log(`paper loses to scissors, lose!`);
       lossCount++;
       lossCountAnimation();
       lossBackChange();
       console.log(`Loss:`, lossCount);
-
     }
     if (selectedHand === scissorHand && botHand === botRockHand) {
       console.log(`scissors loses to rock, lose!`);
@@ -263,21 +238,18 @@ document.addEventListener('DOMContentLoaded', function() {
       lossCountAnimation();
       lossBackChange();
       console.log(`Loss:`, lossCount);
-
     } else if (selectedHand === scissorHand && botHand === botPaperHand) {
       console.log(`scissors beats paper, win!`);
       winCount++;
       winCountAnimation();
       winBackChange();
       console.log(`Wins:`, winCount);
-
     } else if (selectedHand === scissorHand && botHand === botScissorHand) {
       console.log(`scissors ties scissors, tie!`);
       drawCount++;
       drawCountAnimation();
       drawBackChange();
       console.log(`Draws:`, drawCount);
-
     }
     updateCountContainer(winCount, drawCount, lossCount);
   }
