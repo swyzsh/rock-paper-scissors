@@ -1,3 +1,7 @@
+/*
+TODO: Fix Animations
+*/
+
 // run script after DOM loads
 document.addEventListener('DOMContentLoaded', function() {
   // socials
@@ -9,8 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
   githubBtn.addEventListener('click', function() {
     window.open('https://github.com/swyzsh', '_blank');
   });
-  const startBtn = document.getElementById('start-container');
-  const resetBtn = document.getElementById('reset-container');
 
   // bot-hand-generation logic
   const defaultBotHand = document.getElementById('bot-default-hand');
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   //begin game with start button and user selected hand
+  const startBtn = document.getElementById('start-container');
   startBtn.addEventListener('click', function() {
     startGame(selectedHand);
   });
@@ -96,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const winCountContainer = document.getElementById('win-count');
   const drawCountContainer = document.getElementById('draw-count');
   const lossCountContainer = document.getElementById('loss-count');
+
   let winCount = 0;
   let drawCount = 0;
   let lossCount = 0;
@@ -105,95 +109,86 @@ document.addEventListener('DOMContentLoaded', function() {
     drawCountContainer.innerText = draws;
     lossCountContainer.innerText = losses;
   }
+  
+  // change count color with animation when win/draw/loss
   function winCountAnimation() {
     gsap.to('#win-count', {
       color: '#a3be8c', 
-      duration: 0.3, 
-      ease: 'easeInOut', // Use the easeInOut easing function
-      onComplete: () => {  // Optional callback to restore the color
-        gsap.to('#win-count', { color: 'var(--snowStorm2)', duration: 0.6, ease: 'easeInOut' });
-      }
-    });
-  }
-  function drawCountAnimation() {
-    gsap.to('#draw-count', {
-      color: '#5e81ac', 
-      duration: 0.3, 
-      ease: 'easeInOut', // Use the easeInOut easing function
-      onComplete: () => {  // Optional callback to restore the color
-        gsap.to('#draw-count', { color: 'var(--snowStorm2)', duration: 0.6, ease: 'easeInOut' });
-      }
-    });
-  }
-  function lossCountAnimation() {
-    gsap.to('#loss-count', {
-      color: '#bf616a', 
-      duration: 0.3, 
-      ease: 'easeInOut', // Use the easeInOut easing function
-      onComplete: () => {  // Optional callback to restore the color
-        gsap.to('#loss-count', { color: 'var(--snowStorm2)', duration: 0.6, ease: 'easeInOut' });
+      duration: 0.5, 
+      ease: 'power1.inOut',
+      onComplete: function() {
+        gsap.to('#win-count', { 
+          color: '#eceff4',
+          duration: 1,
+          ease: 'power1.inOut',
+        });
       }
     });
   }
 
-  // change background of main div when winning/losing
-  let mainBackTween = null;
+  function drawCountAnimation() {
+    gsap.to('#draw-count', {
+      color: '#5e81ac', 
+      duration: 0.5, 
+      ease: 'power1.inOut',
+      onComplete: function() {
+        gsap.to('#draw-count',{
+          color: '#eceff4',
+          duration: 1,
+          ease: 'power1.inOut',
+        });
+      }
+    });
+  }
+
+  function lossCountAnimation() {
+    gsap.to('#loss-count', {
+      color: '#bf616a', 
+      duration: 0.5, 
+      ease: 'power1.inOut',
+      onComplete: function() {
+        gsap.to('#loss-count', {
+          color: '#eceff4',
+          duration: 1,
+          ease: 'power1.inOut',
+        });
+      }
+    });
+  }
+
+  // change main-back background color with animation when win/draw/loss
+  function changeBackgroundColor(color) {
+    gsap.to('#main-back', {
+      backgroundColor: color,
+      duration: 0.5,
+      ease: 'power1.inOut',
+      onComplete: function() {
+        gsap.to('#main-back', {
+          backgroundColor: '#262c35',
+          duration: 1,
+          ease: 'power1.inOut',
+        })
+      }
+    });
+  }
+
   function winBackChange() {
-    if (mainBackTween) mainBackTween.kill();
-    mainBackTween = gsap.to('#main-back', {
-      backgroundColor: '#a3be8c', 
-      duration: 2, 
-      ease: 'power1.inOut',
-      onComplete: function() {
-        setTimeout(() => {
-          gsap.to('#main-back', { 
-            duration: 2,
-            ease: 'power1.inOut',
-            backgroundColor: 'var(--darkBase)'
-          });
-        }, 100); 
-      }
-    });
+    changeBackgroundColor('#a3be8c');
   }
+
   function drawBackChange() {
-    if (mainBackTween) mainBackTween.kill();
-    mainBackTween = gsap.to('#main-back', {
-      backgroundColor: '#5e81ac', 
-      duration: 2, 
-      ease: 'power1.inOut',
-      onComplete: function() {
-        setTimeout(() => {
-          gsap.to('#main-back', { 
-            duration: 2,   
-            ease: 'power1.inOut',
-            backgroundColor: 'var(--darkBase)'
-          });
-        }, 100); 
-      }
-    });
+    changeBackgroundColor('#5e81ac');
   }
+
   function lossBackChange() {
-    if (mainBackTween) mainBackTween.kill();
-    mainBackTween = gsap.to('#main-back', {
-      backgroundColor: '#bf616a', 
-      duration: 2, 
-      ease: 'power1.inOut',
-      onComplete: function() {
-        setTimeout(() => {
-          gsap.to('#main-back', { 
-            duration: 2,   
-            ease: 'power1.inOut',
-            backgroundColor: 'var(--darkBase)'
-          });
-        }, 100); 
-      }
-    });
+    changeBackgroundColor('#bf616a');
   }
 
   // game logic
   function startGame(hand) {
     console.log(`Game has started, with the User Hand:`, hand.id);
     getBotHand();
+    
     if (selectedHand === rockHand && botHand === botRockHand) {
       console.log(`rock ties rock, tie!`);
       drawCount++;
@@ -213,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
       winBackChange();
       console.log(`Wins:`, winCount);
     }
+
     if (selectedHand === paperHand && botHand === botRockHand) {
       console.log(`paper beats rock, win!`);
       winCount++;
@@ -232,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
       lossBackChange();
       console.log(`Loss:`, lossCount);
     }
+
     if (selectedHand === scissorHand && botHand === botRockHand) {
       console.log(`scissors loses to rock, lose!`);
       lossCount++;
@@ -251,6 +248,22 @@ document.addEventListener('DOMContentLoaded', function() {
       drawBackChange();
       console.log(`Draws:`, drawCount);
     }
+
     updateCountContainer(winCount, drawCount, lossCount);
   }
+
+  // reset logic
+  const resetBtn = document.getElementById('reset-container');
+  
+  resetBtn.addEventListener('click', function() {
+    // reset all counts
+    winCount = 0;
+    drawCount = 0;
+    lossCount = 0;
+    
+    // reset count-containers
+    winCountContainer.innerText = '0';
+    drawCountContainer.innerText = '0';
+    lossCountContainer.innerText = '0';
+  })
 });
